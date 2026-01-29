@@ -53,7 +53,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const target = document.querySelector(href);
             if (target) {
                 const hHeight = header.offsetHeight;
-                const pos = target.getBoundingClientRect().top + window.pageYOffset - hHeight;
+                // Extra offset for contact section to show form inputs
+                const extraOffset = href === '#contact' ? 50 : 0;
+                const pos = target.getBoundingClientRect().top + window.pageYOffset - hHeight - extraOffset;
                 window.scrollTo({
                     top: pos,
                     behavior: 'smooth'
