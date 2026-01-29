@@ -29,10 +29,10 @@
                 <img src="public/image-removebg-preview (1).png" alt="ClickNova" class="logo-img">
             </a>
             <nav class="nav-links">
-                <a href="#intro">SERVICE</a>
-                <a href="#pricing">PRICING</a>
-                <a href="#samples">SAMPLES</a>
-                <a href="#contact">CONTACT</a>
+                <a href="#intro">서비스</a>
+                <a href="#pricing">가격안내</a>
+                <a href="#samples">샘플보기</a>
+                <a href="#contact">문의하기</a>
             </nav>
             <button class="mobile-menu-btn" aria-label="메뉴 열기">☰</button>
         </div>
@@ -49,7 +49,9 @@
                         디지털 경험
                     </h1>
                     <p class="main-visual__desc animate-up">
-                        단순한 홈페이지를 넘어 브랜드의 가치를 담은 프리미엄 웹 솔루션을 제공합니다. 당신의 상상을 현실로 만들어드립니다.
+                        단순한 홈페이지를 넘어 브랜드의 가치를 담은<br>
+                        프리미엄 웹 솔루션을 제공합니다.<br>
+                        당신의 상상을 현실로 만들어드립니다.
                     </p>
                     <div class="hero-btns animate-up">
                         <a href="#contact" class="btn btn-primary">바로 문의하기</a>
@@ -101,29 +103,29 @@
                     압도적인 웹 솔루션 기능
                 </h2>
                 <div class="feature-grid">
-                    <div class="feature-card animate-up">
+                    <div class="feature-card animate-up" data-image="public/CUSTOMDESIGN.jpg">
                         <i class="fas fa-magic"></i>
-                        <p>CUSTOM DESIGN</p>
+                        <p>맞춤형 디자인</p>
                     </div>
-                    <div class="feature-card animate-up">
+                    <div class="feature-card animate-up" data-image="public/FLEXIBLESCALE.jpg">
                         <i class="fas fa-expand-arrows-alt"></i>
-                        <p>FLEXIBLE SCALE</p>
+                        <p>유연한 확장성</p>
                     </div>
-                    <div class="feature-card animate-up">
+                    <div class="feature-card animate-up" data-image="public/SEOOPTIMIZED.jpg">
                         <i class="fas fa-search-plus"></i>
-                        <p>SEO OPTIMIZED</p>
+                        <p>검색 엔진 최적화</p>
                     </div>
-                    <div class="feature-card animate-up">
+                    <div class="feature-card animate-up" data-image="public/MODERNBOARD.jpg">
                         <i class="fas fa-columns"></i>
-                        <p>MODERN BOARD</p>
+                        <p>세련된 게시판</p>
                     </div>
-                    <div class="feature-card animate-up">
+                    <div class="feature-card animate-up" data-image="public/DATAANALYTICS.jpg">
                         <i class="fas fa-database"></i>
-                        <p>DATA ANALYTICS</p>
+                        <p>데이터 분석</p>
                     </div>
-                    <div class="feature-card animate-up">
+                    <div class="feature-card animate-up" data-image="public/MODERNPOPUP.jpg">
                         <i class="fas fa-window-restore"></i>
-                        <p>MODERN POPUP</p>
+                        <p>감각적인 팝업</p>
                     </div>
                 </div>
             </div>
@@ -286,7 +288,7 @@
                 <p class="main-start__desc animate-up">
                     당신의 비즈니스를 한 단계 더 높여줄 프리미엄 웹 솔루션을 지금 바로 경험해보세요.
                 </p>
-                <a href="#contact" class="btn btn-cta-main animate-up">GET FREE ESTIMATE</a>
+                <a href="#contact" class="btn btn-cta-main animate-up">무료 견적받기</a>
             </div>
         </section>
 
@@ -363,8 +365,14 @@
             style="width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;">
             <img src="public/7044607.png" alt="Phone" style="width: 100%; height: 100%; object-fit: contain;">
         </a>
+    </div> <!-- Image Viewer Modal -->
+    <div id="imageViewerModal" class="image-viewer-modal">
+        <div class="modal-overlay"></div>
+        <div class="image-content-wrapper">
+            <button class="image-close-btn" aria-label="닫기">&times;</button>
+            <img src="" alt="" class="enlarged-image">
+        </div>
     </div>
-
 
 
     <!-- Scripts -->

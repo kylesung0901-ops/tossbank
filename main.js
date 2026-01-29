@@ -143,7 +143,58 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     if (closeBtn) closeBtn.addEventListener('click', closeModal);
-    window.addEventListener('click', (e) => {
-        if (e.target === privacyModal) closeModal();
-    });
+    // 7. Image Viewer Modal Logic
+    const featureCards = document.querySelectorAll('.feature-card[data-image]');
+    const imageViewerModal = document.getElementById('imageViewerModal');
+    const enlargedImage = imageViewerModal?.querySelector('.enlarged-image');
+    const imageCloseBtn = document.querySelector('.image-close-btn');
+    const modalOverlay = document.querySelector('.modal-overlay');
+
+    if (featureCards.length > 0 && imageViewerModal && enlargedImage) {
+        const openImageModal = (imageSrc, altText) => {
+            enlargedImage.src = imageSrc;
+            enlargedImage.alt = altText;
+            imageViewerModal.style.display = 'flex';
+            setTimeout(() => {
+                imageViewerModal.classList.add('active');
+            }, 10);
+            document.body.style.overflow = 'hidden';
+        };
+
+        const closeImageModal = () => {
+            imageViewerModal.classList.remove('active');
+            setTimeout(() => {
+                imageViewerModal.style.display = 'none';
+                enlargedImage.src = '';
+            }, 300);
+            document.body.style.overflow = 'auto';
+        };
+
+        featureCards.forEach(card => {
+            const imageSrc = card.getAttribute('data-image');
+            const altText = card.querySelector('p')?.textContent || '기능 상세';
+
+            card.addEventListener('click', (e) => {
+                e.preventDefault();
+                openImageModal(imageSrc, altText);
+            });
+
+            card.addEventListener('mouseenter', () => {
+                if (window.innerWidth > 1024) {
+                    openImageModal(imageSrc, altText);
+                }
+            });
+        });
+
+        // Close events
+        if (imageCloseBtn) imageCloseBtn.addEventListener('click', closeImageModal);
+        if (modalOverlay) modalOverlay.addEventListener('click', closeImageModal);
+
+        // ESC key to close
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && imageViewerModal.classList.contains('active')) {
+                closeImageModal();
+            }
+        });
+    }
 });
