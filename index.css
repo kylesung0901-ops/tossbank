@@ -127,6 +127,11 @@ section {
     box-shadow: 0 15px 30px rgba(255, 45, 171, 0.4);
 }
 
+.footer-logo-img {
+    filter: brightness(0) invert(1);
+    /* Makes the logo white for better visibility on black background */
+}
+
 /* ========== HEADER ========== */
 header {
     position: fixed;
