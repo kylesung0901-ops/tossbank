@@ -586,6 +586,23 @@ footer {
         /* Natural height for mobile scrolling */
     }
 
+    .hero-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .main-visual__desc {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .hero-video-box {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
     .hero-btns {
         justify-content: center;
     }
