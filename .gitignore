@@ -1,0 +1,13 @@
+node_modules/
+.gemini/
+.agent/
+brain/
+*.log
+.DS_Store
+nuton-online-learning-react-app-pwa-2024-09-12-17-11-42-utc (2)/
+hellocuve_*.png
+hellocuve_*.html
+hellocuve_*.css
+hellocuve_*.json
+scrape_design.js
+prd.md
