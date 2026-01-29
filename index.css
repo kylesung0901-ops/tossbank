@@ -586,27 +586,39 @@ footer {
         /* Natural height for mobile scrolling */
     }
 
+    .hero-wrapper {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
     .hero-content {
         display: flex;
         flex-direction: column;
         align-items: center;
         text-align: center;
-        transform: translateX(-10px);
+        width: 100%;
+    }
+
+    .main-visual__title {
+        width: 100%;
     }
 
     .main-visual__desc {
         margin-left: auto;
         margin-right: auto;
+        width: 100%;
+        padding: 0 10px;
     }
 
     .hero-video-box {
         margin-left: auto;
         margin-right: auto;
-        transform: translateX(-22px);
+        width: calc(100% - 20px);
     }
 
     .hero-btns {
         justify-content: center;
+        width: 100%;
     }
 
     .contact-wrapper {
