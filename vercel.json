@@ -1,6 +1,48 @@
 {
-    "buildCommand": "echo 'No build needed'",
-    "outputDirectory": ".",
-    "cleanUrls": true,
-    "trailingSlash": false
+    "version": 2,
+    "builds": [
+        {
+            "src": "server.js",
+            "use": "@vercel/node"
+        },
+        {
+            "src": "*.html",
+            "use": "@vercel/static"
+        },
+        {
+            "src": "public/**/*",
+            "use": "@vercel/static"
+        },
+        {
+            "src": "*.css",
+            "use": "@vercel/static"
+        },
+        {
+            "src": "main.js",
+            "use": "@vercel/static"
+        }
+    ],
+    "routes": [
+        {
+            "src": "/api/(.*)",
+            "dest": "server.js"
+        },
+        {
+            "src": "/success",
+            "dest": "server.js"
+        },
+        {
+            "src": "/fail",
+            "dest": "server.js"
+        },
+        {
+            "src": "/checkout.html",
+            "dest": "/checkout.html"
+        },
+        {
+            "src": "/(.*)",
+            "dest": "$1"
+        }
+    ],
+    "cleanUrls": true
 }

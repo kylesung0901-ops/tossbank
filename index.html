@@ -19,6 +19,8 @@
 
     <link rel="stylesheet" href="index.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- 토스페이먼츠 v2 SDK 로드 [요구사항 1-1] -->
+    <script src="https://js.tosspayments.com/v2/standard"></script>
 </head>
 
 <body>
@@ -282,6 +284,16 @@
                         </div>
                     </div>
                 </div>
+                <!-- 카드 등록하기 버튼 [정기결제용] -->
+                <div
+                    style="text-align: center; margin-top: 50px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
+                    <button id="register-card-btn" class="btn btn-primary"
+                        style="padding: 20px 40px; font-size: 1.1rem; background: #666;">카드 등록 (빌링)</button>
+                    <!-- 상품 결제하기 버튼 추가 [일반결제용] -->
+                    <a href="checkout.html?amount=600000" id="checkout-btn" class="btn btn-primary"
+                        style="padding: 20px 40px; font-size: 1.1rem; text-decoration: none; display: flex; align-items: center;">상품
+                        결제하기 (Checkout)</a>
+                </div>
             </div>
         </section>
 
@@ -361,6 +373,11 @@
     <!-- Floating Buttons -->
     <div class="floating-buttons"
         style="position: fixed; bottom: 30px; right: 30px; display: flex; flex-direction: column; gap: 15px; z-index: 1001;">
+        <!-- 토스페이 플로팅 버튼 추가 -->
+        <a href="checkout.html?amount=600000" id="toss-floating-btn"
+            style="width: 60px; height: 60px; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 15px rgba(0,0,0,0.2); overflow: hidden;">
+            <img src="public/tosspay.png" alt="TossPay" style="width: 100%; height: 100%; object-fit: contain;">
+        </a>
         <a href="https://open.kakao.com/o/sI6lIS0h" target="_blank"
             style="width: 60px; height: 60px; border-radius: 50%; background: #FEE500; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
             <i class="fas fa-comment" style="color: #3C1E1E; font-size: 28px;"></i>
@@ -382,6 +399,31 @@
     <!-- Scripts -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script>
+        // 토스페이먼츠 v2 SDK 초기화 [요구사항 1-2]
+        const clientKey = "test_ck_D5GePWvyJnrK0W0k6q8gLzN97Eoq";
+        const customerKey = "USER_" + Math.random().toString(36).substring(2, 11); // 고유 customerKey 생성
+
+        // v2 SDK standard 방식에 맞게 초기화
+        const tossPayments = TossPayments(clientKey);
+
+        // 카드 등록 버튼 클릭 이벤트 [요구사항 1-3, 1-4]
+        document.getElementById('register-card-btn').addEventListener('click', async () => {
+            try {
+                // payment 객체 생성 시 customerKey 주입
+                const payment = tossPayments.payment({ customerKey });
+
+                await payment.requestBillingAuth({
+                    method: "CARD",
+                    successUrl: window.location.origin + "/api/success",
+                    failUrl: window.location.origin + "/api/fail"
+                });
+            } catch (error) {
+                console.error('결제창 호출 에러:', error);
+                alert('결제창을 열 수 없습니다: ' + error.message);
+            }
+        });
+    </script>
     <script src="main.js"></script>
 </body>
 
