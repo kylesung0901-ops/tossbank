@@ -5,8 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>결제하기 - ClickNova</title>
-    <!-- Toss Payments Widget SDK -->
-    <script src="https://js.tosspayments.com/v1/payment-widget"></script>
+    <!-- Toss Payments v2 Standard SDK -->
+    <script src="https://js.tosspayments.com/v2/standard"></script>
+
     <style>
         :root {
             --primary: #3182f6;
@@ -118,37 +119,41 @@
     </div>
 
     <script>
-        const clientKey = "live_ck_jExPeJWYVQqE6jdLA0WoV49R5gvN"; // 라이브 클라이언트 키
-
+        const clientKey = "live_ck_ex6BJGQOVD9qGqbX49YqrW4w2zNb"; // 라이브 클라이언트 키
         const customerKey = "GUEST_" + Math.random().toString(36).substring(2, 11);
 
-        const paymentWidget = PaymentWidget(clientKey, customerKey);
+        const tossPayments = TossPayments(clientKey);
+        const payment = tossPayments.payment({ customerKey });
 
         // URL 파라미터에서 금액 가져오기 (기본값 600,000)
         const urlParams = new URLSearchParams(window.location.search);
         const amountValue = parseInt(urlParams.get('amount')) || 600000;
         document.getElementById('display-amount').innerText = amountValue.toLocaleString() + '원';
 
-        // 결제 UI 렌더링
-        paymentWidget.renderPaymentMethods(
-            "#payment-method",
-            { value: amountValue }
-        );
-
-        // 이용약관 UI 렌더링
-        paymentWidget.renderAgreement("#agreement");
-
-
         // 결제 요청
-        document.getElementById("payment-button").addEventListener("click", () => {
-            paymentWidget.requestPayment({
-                orderId: "ORDER_" + Date.now(),
-                orderName: "ClickNova 웹 솔루션 서비스",
-                successUrl: window.location.origin + "/success",
-                failUrl: window.location.origin + "/fail",
-            });
+        document.getElementById("payment-button").addEventListener("click", async () => {
+            try {
+                await payment.requestPayment({
+                    method: "CARD", // 카드 결제
+                    amount: {
+                        currency: "KRW",
+                        value: amountValue,
+                    },
+                    orderId: "ORDER_" + Date.now(),
+                    orderName: "ClickNova 웹 솔루션 서비스",
+                    successUrl: window.location.origin + "/success",
+                    failUrl: window.location.origin + "/fail",
+                    card: {
+                        flowMode: "DEFAULT",
+                    },
+                });
+            } catch (error) {
+                console.error('결제 요청 에러:', error);
+                alert('결제 요청 중 오류가 발생했습니다: ' + error.message);
+            }
         });
     </script>
+
 </body>
 
 </html>

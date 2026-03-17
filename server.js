@@ -11,9 +11,10 @@ app.use(express.static('public'));
 
 
 // 라이브 시크릿 키
-const SECRET_KEY = 'live_sk_ma60RZblrq5gqJ5Xpl4brwzYWBn1';
-// 보안 키: e79068cf1892ef59841fc262bc337ecf09b2c1b7c8c584a97b1bddcaedac3954
+const SECRET_KEY = 'live_sk_DpexMgkW36wwWRmbvKBJVGbR5ozO';
+// 보안 키: 81ebde6320a417416a4f00b6a4b53dd761a3b73646e26b900e71c803b2260517
 const encodedSecretKey = Buffer.from(SECRET_KEY + ':').toString('base64');
+
 
 
 // 임시 DB (메모리 저장소)
