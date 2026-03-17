@@ -89,12 +89,48 @@
             background-color: #1b64da;
         }
 
+        /* Amount selection styles */
+        .amount-selector {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .amount-btn {
+            background: white;
+            border: 1px solid #e5e8eb;
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #4e5968;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .amount-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .amount-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
         /* Mobile adjustment */
         @media (max-width: 480px) {
             .container {
                 padding: 25px;
             }
+            .amount-selector {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
+
     </style>
 </head>
 
@@ -110,7 +146,22 @@
             <span class="amount" id="display-amount">600,000원</span>
         </div>
 
+        <div class="amount-selector" id="amount-selector">
+            <button class="amount-btn" data-value="10000">1만원</button>
+            <button class="amount-btn" data-value="30000">3만원</button>
+            <button class="amount-btn" data-value="50000">5만원</button>
+            <button class="amount-btn" data-value="100000">10만원</button>
+            <button class="amount-btn" data-value="500000">50만원</button>
+            <button class="amount-btn active" data-value="600000">60만원</button>
+            <button class="amount-btn" data-value="1000000">100만원</button>
+            <button class="amount-btn" data-value="1500000">150만원</button>
+            <button class="amount-btn" data-value="2000000">200만원</button>
+            <button class="amount-btn" data-value="3000000">300만원</button>
+            <button class="amount-btn" data-value="5000000">500만원</button>
+        </div>
+
         <!-- 결제 UI가 렌더링될 영역 -->
+
         <div id="payment-method"></div>
         <!-- 이용약관 UI가 렌더링될 영역 -->
         <div id="agreement"></div>
@@ -125,10 +176,37 @@
         const tossPayments = TossPayments(clientKey);
         const payment = tossPayments.payment({ customerKey });
 
+        // 현재 선택된 금액 관리
+        let currentAmount = 600000;
+
         // URL 파라미터에서 금액 가져오기 (기본값 600,000)
         const urlParams = new URLSearchParams(window.location.search);
-        const amountValue = parseInt(urlParams.get('amount')) || 600000;
-        document.getElementById('display-amount').innerText = amountValue.toLocaleString() + '원';
+        const initialAmount = parseInt(urlParams.get('amount')) || 600000;
+        updateAmount(initialAmount);
+
+        // 금액 버튼 클릭 이벤트 설정
+        const amountBtns = document.querySelectorAll('.amount-btn');
+        amountBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const value = parseInt(btn.getAttribute('data-value'));
+                updateAmount(value);
+                
+                // 버튼 활성화 상태 변경
+                amountBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            });
+            
+            // 초기 활성화 상태 설정
+            if (parseInt(btn.getAttribute('data-value')) === initialAmount) {
+                amountBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            }
+        });
+
+        function updateAmount(value) {
+            currentAmount = value;
+            document.getElementById('display-amount').innerText = value.toLocaleString() + '원';
+        }
 
         // 결제 요청
         document.getElementById("payment-button").addEventListener("click", async () => {
@@ -137,7 +215,7 @@
                     method: "CARD", // 카드 결제
                     amount: {
                         currency: "KRW",
-                        value: amountValue,
+                        value: currentAmount,
                     },
                     orderId: "ORDER_" + Date.now(),
                     orderName: "ClickNova 웹 솔루션 서비스",
@@ -153,6 +231,7 @@
             }
         });
     </script>
+
 
 </body>
 
