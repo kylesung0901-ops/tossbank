@@ -118,7 +118,8 @@
     </div>
 
     <script>
-        const clientKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm"; // 테스트 클라이언트 키
+        const clientKey = "live_ck_jExPeJWYVQqE6jdLA0WoV49R5gvN"; // 라이브 클라이언트 키
+
         const customerKey = "GUEST_" + Math.random().toString(36).substring(2, 11);
 
         const paymentWidget = PaymentWidget(clientKey, customerKey);
@@ -131,12 +132,12 @@
         // 결제 UI 렌더링
         paymentWidget.renderPaymentMethods(
             "#payment-method",
-            { value: amountValue },
-            { variantKey: "DEFAULT" }
+            { value: amountValue }
         );
 
         // 이용약관 UI 렌더링
-        paymentWidget.renderAgreement("#agreement", { variantKey: "AGREEMENT" });
+        paymentWidget.renderAgreement("#agreement");
+
 
         // 결제 요청
         document.getElementById("payment-button").addEventListener("click", () => {

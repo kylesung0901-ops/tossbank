@@ -6,10 +6,15 @@ const port = process.env.PORT || 4000;
 
 app.use(cors());
 app.use(express.json());
+app.use(express.static('.'));
+app.use(express.static('public'));
 
-// 테스트용 시크릿 키
-const SECRET_KEY = 'test_sk_zXLkKEypNArWmo50nX3lmeaxYG5R';
+
+// 라이브 시크릿 키
+const SECRET_KEY = 'live_sk_ma60RZblrq5gqJ5Xpl4brwzYWBn1';
+// 보안 키: e79068cf1892ef59841fc262bc337ecf09b2c1b7c8c584a97b1bddcaedac3954
 const encodedSecretKey = Buffer.from(SECRET_KEY + ':').toString('base64');
+
 
 // 임시 DB (메모리 저장소)
 const billingKeysDb = [];
