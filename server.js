@@ -1,8 +1,15 @@
+require('dotenv').config();
 const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
+const mongoose = require('mongoose');
+const Inquiry = require('./models/Inquiry');
 const app = express();
 const port = process.env.PORT || 4000;
+
+mongoose.connect(process.env.MONGODB_URI, { family: 4 })
+    .then(() => console.log('MongoDB 연결 성공'))
+    .catch(err => { console.error('MongoDB 연결 실패:', err); process.exit(1); });
 
 app.use(cors());
 app.use(express.json());
@@ -187,6 +194,22 @@ app.post('/api/confirm', async (req, res) => {
     } catch (error) {
         console.error('결제 승인 에러:', error.response ? error.response.data : error.message);
         res.status(500).json(error.response ? error.response.data : { message: '결제 승인 중 에러 발생' });
+    }
+});
+
+app.post('/api/inquiries', async (req, res) => {
+    const { name, phone, email, type, message } = req.body;
+
+    if (!name || !phone) {
+        return res.status(400).json({ error: '성함과 연락처는 필수입니다.' });
+    }
+
+    try {
+        const inquiry = await Inquiry.create({ name, phone, email, type, message });
+        res.status(201).json({ id: inquiry._id });
+    } catch (err) {
+        console.error('문의 저장 실패:', err);
+        res.status(500).json({ error: '서버 오류가 발생했습니다.' });
     }
 });
 

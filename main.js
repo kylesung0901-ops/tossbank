@@ -64,64 +64,51 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // 5. Firebase & Form Submission
-    const firebaseConfig = {
-        apiKey: "AIzaSyC3XN0TK1ZUenxgXPn7jbf_p6x4f-OKOQk",
-        authDomain: "tossbank-39252.firebaseapp.com",
-        projectId: "tossbank-39252",
-        storageBucket: "tossbank-39252.firebasestorage.app",
-        messagingSenderId: "210375359934",
-        appId: "1:210375359934:web:6ddcddbcedd0ad659bcdef",
-        measurementId: "G-56RBXGMMJ8"
-    };
+    // 5. Form Submission (MongoDB API)
+    const form = document.getElementById('inquiryForm');
+    if (form) {
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
 
-    // Initialize Firebase if script is loaded
-    if (typeof firebase !== 'undefined') {
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
+            const name    = document.getElementById('userName').value;
+            const phone   = document.getElementById('userPhone').value;
+            const email   = document.getElementById('userEmail').value;
+            const type    = document.getElementById('inquiryType').value;
+            const message = document.getElementById('message').value;
 
-        const form = document.getElementById('inquiryForm');
-        if (form) {
-            form.addEventListener('submit', async (e) => {
-                e.preventDefault();
+            if (!name || !phone) {
+                alert('성함과 연락처는 필수 입력입니다.');
+                return;
+            }
 
-                const name = document.getElementById('userName').value;
-                const phone = document.getElementById('userPhone').value;
-                const email = document.getElementById('userEmail').value;
-                const type = document.getElementById('inquiryType').value;
-                const message = document.getElementById('message').value;
+            const fullMsg = `[헬로큐브 문의]\n\n` +
+                `■ 성함: ${name}\n` +
+                `■ 연락처: ${phone}\n` +
+                `■ 이메일: ${email || '미입력'}\n` +
+                `■ 유형: ${type}\n` +
+                `■ 내용:\n${message || '내용 없음'}`;
 
-                if (!name || !phone) {
-                    alert('성함과 연락처는 필수 입력입니다.');
-                    return;
+            try {
+                const res = await fetch('/api/inquiries', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, phone, email, type, message })
+                });
+
+                if (!res.ok) {
+                    const err = await res.json();
+                    throw new Error(err.error || '서버 오류');
                 }
 
-                const fullMsg = `[헬로큐브 문의]\n\n` +
-                    `■ 성함: ${name}\n` +
-                    `■ 연락처: ${phone}\n` +
-                    `■ 이메일: ${email || '미입력'}\n` +
-                    `■ 유형: ${type}\n` +
-                    `■ 내용:\n${message || '내용 없음'}`;
-
-                try {
-                    // Save to Firestore
-                    await db.collection("inquiries").add({
-                        name, phone, email, type, message,
-                        createdAt: new Date()
-                    });
-
-                    // Copy to clipboard
-                    await navigator.clipboard.writeText(fullMsg);
-
-                    alert("문의 내용이 복사되었습니다.\n오픈채팅창에 붙여넣어 전송해주세요!");
-                    window.open("https://open.kakao.com/o/sI6lIS0h");
-                    form.reset();
-                } catch (err) {
-                    console.error("Submission Error:", err);
-                    alert("오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
-                }
-            });
-        }
+                await navigator.clipboard.writeText(fullMsg);
+                alert("문의 내용이 복사되었습니다.\n오픈채팅창에 붙여넣어 전송해주세요!");
+                window.open("https://open.kakao.com/o/sI6lIS0h");
+                form.reset();
+            } catch (err) {
+                console.error("Submission Error:", err);
+                alert("오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+            }
+        });
     }
 
     // 6. Modal Controls
